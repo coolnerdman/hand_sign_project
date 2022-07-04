@@ -11,3 +11,5 @@ references
 
 - https://github.com/Kazuhito00/hand-gesture-recognition-using-mediapipe
 - https://github.com/23bulgogi/sonmari
+
+"python app.py" to run program

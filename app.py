@@ -20,12 +20,11 @@ from model import KeyPointClassifier
 
 result = ""          #현재 결과
 before_result = ""  #이전 결과
-result_que = Queue(3) # result들을 저장하는 큐 생성. 현재 결과까지 최대 2개 저장
-
-# 핵심 동작이 두개 이상인 수어. ex) 10, 11이 입력되면 맥주 출력
-continuous = {'맥주' : ['10','11'], '빵' : ['12', '13'], '집' : ['14', '15'] , '신경' : ['16', '17']}
-# 핵심 동작이 하나인 수어   
-one = { '0':'고집', '1':'쳐다보다', '2': '찌푸리다', '3':'분하다', '4':'남성', '5':'깔보다', '6':'싫다', '7':'노려보다', '8':'귀엽다', '9':'겸손'}
+result_que = Queue(3) #result들을 저장하는 큐 생성. 현재 결과까지 최대 2개 저장
+#0, 1이 입력되면 good 출력
+continuous= {'이번' : ['1','2'], '발표' : ['3', '4'], '질의' : ['5', '6'], '응답과' : ['7', '8'], '요약을' : ['9', '10'], '맡은' : ['11', '12'], '담당자' : ['13', '14']  }
+    
+one = {'0':'저는',  '15' : '입니다'}
 
 list_of_key = list(continuous.keys())
 list_of_value = list(continuous.values())
@@ -103,9 +102,22 @@ def main():
     # FPS측정모듈 ########################################################
     cvFpsCalc = CvFpsCalc(buffer_len=10)
 
+    # 좌표 이력 #################################################################
+    # history_length = 16
+    # point_history = deque(maxlen=history_length)
+
+    # 핑거 제스처 이력 ################################################
+    # finger_gesture_history = deque(maxlen=history_length)
+
+    #  ########################################################################
     mode = 0
     
-    
+    # 손마리 연결 코드
+    # frame_queue = Queue()
+    # darknet_image_queue = Queue(maxsize=1)
+    # detections_queue = Queue(maxsize=1)
+    # fps_queue = Queue(maxsize=1)
+
     while True:
         fps = cvFpsCalc.get()
 
@@ -487,10 +499,12 @@ def drawing(image, hand_sign_text):
     
     random.seed(3)   
     label = ""       #detect 결과(실시간으로 detect된 이미지)
-    word = ""        #최ff종으로 출력할 단어
+    word = ""        #최종으로 출력할 단어
     sentence=[]      #출력할 문장
     
-
+    # result = ""          #현재 결과
+    # before_result = ""  #이전 결과
+    # result_que = Queue(3) #result들을 저장하는 큐 생성. 현재 결과까지 최대 3개 저장
     x,y = 200, 450
     h, w, c = image.shape
     # print('h, w :',h, w)
@@ -522,13 +536,19 @@ def drawing(image, hand_sign_text):
             if(before_result != result and result not in list(one.keys())):
                 if(not result_que.full()):
                     result_que.put(result)
+                    # print('!=',list(result_que.queue))
 
                 else:
                     #큐가 가득 차있으면 원소 제거 후 삽입
                     result_que.get()
                     result_que.put(result)
                     
-                                
+                    # print('full',list(result_que.queue))
+            
+#             print('label:', label)
+#             print('one', one.get(label))
+                    
+ #########################################여기까지 작동###################################           
 
 
             #핵심동작 1개인 수화 출력
@@ -546,10 +566,15 @@ def drawing(image, hand_sign_text):
 
                 # print('one', one.get(label))
                 result_que = Queue(3)
-                
 
             list_of_result = list(result_que.queue)
             #큐를 리스트로 변환
+
+
+            #'완쾌'와 독립적으로 '낫다' 출력
+            # if 'recovery1' not in list_of_result and 'recovery2' not in list_of_result and label=='recovery3':
+            #     sentence.append('낫다 ')    
+            #     draw.text((x, y), "낫다", font=ImageFont.truetype('malgun.ttf', 36), fill=(0, 0, 0))
 
 
             #핵심동작 2개,3개인 수화 출력
