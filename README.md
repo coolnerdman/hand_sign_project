@@ -2,6 +2,7 @@
 
 ######
 학습된 단어들
+<img src="./img1.png"  width="700" height="370">
 ------------------------------------------------------------------------------------------------------------------------------------------------------
 0 나,내,제 https://sldict.korean.go.kr/front/sign/signContentsView.do?origin_no=11536&top_category=CTE&category=&searchKeyword=%EB%82%98&searchCondition=&search_gubun=&museum_type=00&current_pos_index=0
 
